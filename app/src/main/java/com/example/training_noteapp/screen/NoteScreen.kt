@@ -47,6 +47,8 @@ fun NoteScreen(
     onRemoveNote: (Note) -> Unit
 
 ) {
+    val titleLimit = 25
+    val descriptionLimit = 150
     
     val focusManager = LocalFocusManager.current
 
@@ -57,6 +59,10 @@ fun NoteScreen(
     }
     var description by remember {
         mutableStateOf("")
+    }
+
+    var showErrors by remember {
+        mutableStateOf(false)
     }
 
     Scaffold(topBar = {
@@ -87,19 +93,24 @@ fun NoteScreen(
                 NoteInputText(
                     text = title,
                     label = "Title",
+                    charLimit = titleLimit,
+                    isError = showErrors && title.isBlank(),
+                    errorText = "Title cannot be empty",
                     onTextChange = {
-                        if (it.all { char ->
-                                char.isLetter() || char.isWhitespace()
-                            }) title = it
+                        title = it
+                        if (it.isNotBlank()) showErrors = false
                     }
                 )
                 NoteInputText(
                     text = description,
                     label = "Note description",
+                    charLimit = descriptionLimit,
+                    isError = showErrors && description.isBlank(),
+                    errorText = "Description cannot be empty",
+                    maxLines = 4,
                     onTextChange = {
-                        if (it.all { char ->
-                                char.isLetter() || char.isWhitespace()
-                            }) description = it
+                        description = it
+                        if (it.isNotBlank()) showErrors = false
                     }
                 )
                 NoteButton(
@@ -114,8 +125,12 @@ fun NoteScreen(
                             )
                             title = ""
                             description = ""
+                            showErrors = false
                             focusManager.clearFocus()
                             Toast.makeText(context,"Note Added", Toast.LENGTH_SHORT).show()
+                        } else {
+                            showErrors = true
+                            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_LONG).show()
                         }
                     }
                 )
