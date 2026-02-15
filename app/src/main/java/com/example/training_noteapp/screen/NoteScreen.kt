@@ -49,9 +49,8 @@ fun NoteScreen(
 ) {
     val titleLimit = 25
     val descriptionLimit = 150
-    
-    val focusManager = LocalFocusManager.current
 
+    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
     var title by remember {
@@ -60,7 +59,6 @@ fun NoteScreen(
     var description by remember {
         mutableStateOf("")
     }
-
     var showErrors by remember {
         mutableStateOf(false)
     }
@@ -84,9 +82,9 @@ fun NoteScreen(
         )
     }) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 48.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -107,7 +105,7 @@ fun NoteScreen(
                     charLimit = descriptionLimit,
                     isError = showErrors && description.isBlank(),
                     errorText = "Description cannot be empty",
-                    maxLines = 4,
+                    maxLines = 6,
                     onTextChange = {
                         description = it
                         if (it.isNotBlank()) showErrors = false
@@ -147,8 +145,6 @@ fun NoteScreen(
             }
         }
     }
-
-
 }
 
 @Composable
@@ -186,7 +182,6 @@ fun NoteRow(
                     .atZone(java.time.ZoneId.systemDefault())),
                 style = MaterialTheme.typography.labelSmall
             )
-
         }
     }
 }
