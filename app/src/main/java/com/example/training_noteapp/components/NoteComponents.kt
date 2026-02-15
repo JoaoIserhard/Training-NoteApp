@@ -57,10 +57,8 @@ fun NoteInputText(
             onImeAction()
             keyboardController?.hide()
         }),
-        modifier = modifier
-
+        modifier = modifier.fillMaxWidth()
     )
-
 }
 
 @Composable
@@ -75,5 +73,4 @@ fun NoteButton(
     ) {
         Text(text = text)
     }
-
 }
