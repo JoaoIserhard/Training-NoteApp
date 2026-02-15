@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -134,13 +136,39 @@ fun NoteScreen(
                 )
             }
             HorizontalDivider(modifier = Modifier.padding(8.dp))
-            LazyColumn {
-                items(notes) { note ->
-                    NoteRow(
-                        note = note,
-                        onNoteClicked = {
-                            onRemoveNote(note)
-                        })
+            if (notes.isEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Create,
+                        contentDescription = "No notes",
+                        modifier = Modifier.size(100.dp),
+                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                    )
+                    Text(text = "No notes yet!",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                    )
+                    Text(
+                        text = "Your thoughts will appear here",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.4f)
+                    )
+                }
+            } else {
+                LazyColumn {
+                    items(notes) { note ->
+                        NoteRow(
+                            note = note,
+                            onNoteClicked = {
+                                onRemoveNote(note)
+                            })
+                    }
                 }
             }
         }
